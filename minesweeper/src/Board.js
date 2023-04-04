@@ -1,15 +1,32 @@
-import {Container, Row, Col} from 'react-bootstrap'
-import './stylesheets/Board.css'
+import React, { useContext } from "react";
+import { myContext } from "./App";
+import { Container, Row, Col } from "react-bootstrap";
+import "./stylesheets/Board.css";
 
-export default function Board({ board }) {
-    console.log(board)
+export default function Board({ board, clickedCells, handleClick }) {
   return (
     <Container>
       {board.map((row, index) => {
         return (
           <Row key={index}>
-            {row.map((num, ind) => {
-              return <Col key={ind} onClick={() => console.log(`You clicked on ${num}`)}>{num}</Col>;
+            {row.map((cell, cellIndex) => {
+              const isCellClicked = clickedCells.some(
+                (clickedCell) => clickedCell === cell.id
+              );
+              const cellContent = isCellClicked ? cell.id : "";
+              return (
+                <Col
+                  key={cellIndex}
+                  style={{
+                    width: "50px",
+                    height: "50px",
+                    backgroundColor: isCellClicked ? "white" : "gray",
+                  }}
+                  onClick={() => handleClick(cell.id)}
+                >
+                  {cellContent}
+                </Col>
+              );
             })}
           </Row>
         );
